@@ -25,4 +25,8 @@ const promiseFns = [
     getPromiseFnThatResolves(3)
   ]
 
-promiseSequence({promiseFns, onResolveCurrent: val => console.log(val), onFinished: () => console.log('done')})
+promiseSequence({
+  promiseFns, 
+  onResolveCurrent: val => console.log(val), 
+  onFinished: () => console.log('done')
+})

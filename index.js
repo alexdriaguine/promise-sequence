@@ -1,4 +1,9 @@
-function promiseSequence({promiseFns, ignoreErrors = true, onResolveCurrent = (val) => {}, onFinished = () => {}}) {
+function promiseSequence({
+  promiseFns, 
+  ignoreErrors = true, 
+  onResolveCurrent = (val) => {}, 
+  onFinished = () => {}
+}) {
   let max = promiseFns.length
   let count = 0
 
