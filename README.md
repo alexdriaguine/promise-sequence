@@ -1,13 +1,10 @@
-# sequential-promise
+# trainflow
 A tool to make sure a promise in a sequence is resolved before moving on to the next one
 
 ## Usage
 
 ```javascript
-const promiseSequence = require('sequential-promises')
-
-
-
+const trainflow = require('trainflow')
 
 // Wrap the promise in a highter order function,
 // to make sure it is not trying to resolve until we want
@@ -29,7 +26,7 @@ const promiseFns = [
     getPromiseFnThatResolves(3)
   ]
 
-promiseSequence({
+trainflow({
   promiseFns, 
   ignoreErrors: // optional
   onResolveCurrent: ({current, all}) => console.log({current, all}), // optional

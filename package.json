@@ -1,5 +1,5 @@
 {
-  "name": "sequential-promises",
+  "name": "trainflow",
   "version": "0.1.0",
   "description": "A tool to make sure promises run in a sequence",
   "main": "index.js",
