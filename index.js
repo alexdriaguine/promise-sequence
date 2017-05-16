@@ -4,26 +4,22 @@ function promiseSequence({
   onResolveCurrent = (val) => {}, 
   onFinished = () => {}
 }) {
-  let max = promiseFns.length
   let count = 0
 
-  function runPromiseFunc(promiseFn, results = []) {
-    count++
-    return promiseFn()
-      .then(val => { 
-        onResolveCurrent({current: val, all: [...results, val]})
-        return count === max 
+  const runPromiseFunc = (promiseFn, results = []) => (
+    count++,
+    promiseFn()
+      .then(val => (onResolveCurrent({current: val, all: [...results, val]}),
+        count === promiseFns.length 
           ? (onFinished(), [...results, val]) 
           : runPromiseFunc(promiseFns[count], [...results, val])
-      })
-      .catch(err => {
-        if (ignoreErrors) return runPromiseFunc(promiseFns[count], results)
-        count === max
-          ? (onFinished(), [...results, err])
-          : runPromiseFunc(promiseFns[count], [...results, err])
-      })
-  }
-
+        )
+      )
+      .catch(err => count === promiseFns.length
+        ? (onFinished(), (ignoreErrors ? results : [...results, err])) 
+        : runPromiseFunc(promiseFns[count], (ignoreErrors ? results : [...results, err]))
+      )
+  )
   return runPromiseFunc(promiseFns[0])
 }
 

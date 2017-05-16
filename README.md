@@ -6,6 +6,9 @@ A tool to make sure a promise in a sequence is resolved before moving on to the 
 ```javascript
 const promiseSequence = require('./index')
 
+
+
+
 // Wrap the promise in a highter order function,
 // to make sure it is not trying to resolve until we want
 const getPromiseFnThatResolves = (val) =>
