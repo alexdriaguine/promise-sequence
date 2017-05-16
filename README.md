@@ -4,7 +4,7 @@ A tool to make sure a promise in a sequence is resolved before moving on to the 
 ## Usage
 
 ```javascript
-const promiseSequence = require('./index')
+const promiseSequence = require('sequential-promises')
 
 
 
