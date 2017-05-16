@@ -3,6 +3,10 @@ A tool to make sure a promise in a sequence is resolved before moving on to the 
 
 ## Usage
 
+```bash
+yarn add trainflow # or good ol npm
+```
+
 ```javascript
 const trainflow = require('trainflow')
 
