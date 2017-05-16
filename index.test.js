@@ -24,6 +24,37 @@ test('actually waits for a promise to resolve before moving on', done => {
     .then(() => done())
 })
 
+test('ignores rejections when ignoreErrors is true', done => {
+  const expected = [2, 4, 0, 5, 3]
+  const promiseFns = [
+    getPromiseFnThatResolves(2),
+    getPromiseFnThatResolves(4),
+    getPromiseFnThatResolves(0),
+    getPromiseFnThatRejects(1),
+    getPromiseFnThatResolves(5),
+    getPromiseFnThatResolves(3)
+  ]
+
+  return promiseSequence({promiseFns, ignoreErrors: true})
+    .then(actual => expect(JSON.stringify(actual)).toBe(JSON.stringify(expected)))
+    .then(() => done())
+})
+
+test('has an error obj when ignoreErrors is false', done => {
+  const expected = [2, 4, 0, {error: 'rejected'},  5, 3]
+  const promiseFns = [
+    getPromiseFnThatResolves(2),
+    getPromiseFnThatResolves(4),
+    getPromiseFnThatResolves(0),
+    getPromiseFnThatRejects(1),
+    getPromiseFnThatResolves(5),
+    getPromiseFnThatResolves(3)
+  ]
+
+  return promiseSequence({promiseFns, ignoreErrors: false})
+    .then(actual => expect(JSON.stringify(actual)).toBe(JSON.stringify(expected)))
+    .then(() => done())
+})
 
 
 /**
@@ -47,6 +78,6 @@ const getPromiseFnThatRejects = (val) =>
   () =>
     new Promise((resolve, reject) => {
       setTimeout(() => {
-        reject('rejection')
+        reject({error: 'rejected'})
       }, val * 100)
     })
