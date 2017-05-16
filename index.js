@@ -1,26 +1,32 @@
-function promiseSequence({
-  promiseFns, 
-  ignoreErrors = true, 
-  onResolveCurrent = (val) => {}, 
+function trainflow({
+  promiseFns,
+  ignoreErrors = true,
+  onResolveCurrent = val => {},
   onFinished = () => {}
 }) {
+  const max = promiseFns.length
   let count = 0
 
-  const runPromiseFunc = (promiseFn, results = []) => (
-    count++,
-    promiseFn()
-      .then(val => (onResolveCurrent({current: val, all: [...results, val]}),
-        count === promiseFns.length 
-          ? (onFinished(), [...results, val]) 
-          : runPromiseFunc(promiseFns[count], [...results, val])
-        )
+  const appendError = (results, err) =>
+    ignoreErrors ? results : [...results, err]
+  const appendValue = (results, val) => [...results, val]
+  const runPromiseFunc = (promiseFn, results = []) => {
+    const isDone = ++count === max
+    return promiseFn()
+      .then(current => {
+        const all = appendValue(results, current)
+        onResolveCurrent({current, all})
+        return isDone ? all : runPromiseFunc(promiseFns[count], all)
+      })
+      .catch(
+        err =>
+          isDone
+            ? appendError(results, err)
+            : runPromiseFunc(promiseFns[count], appendError(results, err))
       )
-      .catch(err => count === promiseFns.length
-        ? (onFinished(), (ignoreErrors ? results : [...results, err])) 
-        : runPromiseFunc(promiseFns[count], (ignoreErrors ? results : [...results, err]))
-      )
-  )
+  }
+
   return runPromiseFunc(promiseFns[0])
 }
 
-module.exports = promiseSequence
+module.exports = trainflow
