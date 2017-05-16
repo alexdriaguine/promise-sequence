@@ -1,11 +1,12 @@
 {
   "name": "trainflow",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A tool to make sure promises run in a sequence",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
+  "repository": "https://github.com/alexdriaguine/trainflow.git",
   "keywords": ["promise", "sequence"],
   "author": "Alexandre Driaguine",
   "license": "MIT",
