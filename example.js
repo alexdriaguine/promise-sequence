@@ -8,14 +8,6 @@ const getPromiseFnThatResolves = (val) =>
       }, val * 1000)
     })
 
-const getPromiseFnThatRejects = (val) =>
-  () =>
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        reject('rejection')
-      }, val * 100)
-    })
-
 const promiseFns = [
     getPromiseFnThatResolves(2),
     getPromiseFnThatResolves(4),
@@ -27,6 +19,5 @@ const promiseFns = [
 
 promiseSequence({
   promiseFns, 
-  onResolveCurrent: val => console.log(val), 
-  onFinished: () => console.log('done')
+  onResolveCurrent: val => console.log(val)
 })
