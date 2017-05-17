@@ -1,6 +1,6 @@
 {
   "name": "trainflow",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A tool to make sure promises run in a sequence",
   "main": "index.js",
   "scripts": {
