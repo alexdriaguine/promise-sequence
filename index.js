@@ -1,10 +1,9 @@
 function trainflow({
-  fns,
+  promiseFns,
   ignoreErrors = true,
   onResolveCurrent = val => {},
-  onFinished = () => {}
 }) {
-  const max = fns.length
+  const max = promiseFns.length
   let count = 0
 
   const run = (fn, res = []) => {
@@ -13,18 +12,18 @@ function trainflow({
     const appendError = (res, err) => (ignoreErrors ? res : [...res, err])
 
     const handleError = err =>
-      isDone ? appendError(res, err) : run(fns[count], appendError(res, err))
+      isDone ? appendError(res, err) : run(promiseFns[count], appendError(res, err))
       
     const handleSuccess = current => {
-      const all = appendValue({res, current})
+      const all = appendValue(res, current)
       onResolveCurrent({current, all})
-      return isDone ? all : run(fns[count], all)
+      return isDone ? all : run(promiseFns[count], all)
     }
 
     return fn().then(handleSuccess).catch(handleError)
   }
 
-  return run(fns[0])
+  return run(promiseFns[0])
 }
 
 module.exports = trainflow
